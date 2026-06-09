@@ -1,0 +1,179 @@
+
+> carbontrace-ai@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by an unknown process, using available port 3001 instead.
+▲ Next.js 16.2.7 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://10.143.72.247:3001
+- Environments: .env.local
+✓ Ready in 359ms
+
+Health Check: Firebase error Error: 5 NOT_FOUND: 
+    at GET (src/app/api/health/route.ts:22:54)
+  20 |   try {
+  21 |     // A simple read query to verify Firebase Admin is connected
+> 22 |     await adminDb.collection("system").doc("health").get();
+     |                                                      ^
+  23 |     status.services.firebase = "connected";
+  24 |   } catch (error) {
+  25 |     console.error("Health Check: Firebase error", error); {
+  code: 5,
+  details: '',
+  metadata: Metadata {
+    internalRepr: Map(1) { 'x-debug-tracking-id' => [Array] },
+    opaqueData: Map(0) {},
+    options: {}
+  }
+}
+Primary Gemini client failed. Checking if fallback is needed. [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent: [503 Service Unavailable] This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+Attempting fallback using Vertex AI with model: gemini-3.5-flash...
+The VertexAI class and all its dependencies are deprecated as of June 24, 2025 and will be removed on June 24, 2026. Please use the Google Gen AI SDK (https://www.npmjs.com/package/@google/genai) to access Gemini features. For details, see https://cloud.google.com/vertex-ai/generative-ai/docs/deprecations/genai-vertexai-sdk.
+Vertex AI Fallback also failed: Error [GoogleAuthError]: [VertexAI.GoogleAuthError]: 
+Unable to authenticate your request        
+Depending on your run time environment, you can get authentication by        
+- if in local instance or cloud shell: `!gcloud auth login`        
+- if in Colab:        
+    -`from google.colab import auth`        
+    -`auth.authenticate_user()`        
+- if in service account or other: please follow guidance in https://cloud.google.com/docs/authentication
+    at async (src/lib/gemini/client.ts:111:32)
+    at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+    at async GET (src/app/api/health/route.ts:37:5)
+  109 |             safetySettings: safetySettings as any,
+  110 |           });
+> 111 |           const vertexResult = await vertexModel.generateContent(request as any);
+      |                                ^
+  112 |           
+  113 |           // Normalize Vertex response to match EnhancedGenerateContentResponse
+  114 |           const normalizedResponse = { {
+  stackTrace: Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+      at async (src/lib/gemini/client.ts:111:32)
+      at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+      at async GET (src/app/api/health/route.ts:37:5)
+    109 |             safetySettings: safetySettings as any,
+    110 |           });
+  > 111 |           const vertexResult = await vertexModel.generateContent(request as any);
+        |                                ^
+    112 |           
+    113 |           // Normalize Vertex response to match EnhancedGenerateContentResponse
+    114 |           const normalizedResponse = {,
+  [cause]: Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+      at async (src/lib/gemini/client.ts:111:32)
+      at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+      at async GET (src/app/api/health/route.ts:37:5)
+    109 |             safetySettings: safetySettings as any,
+    110 |           });
+  > 111 |           const vertexResult = await vertexModel.generateContent(request as any);
+        |                                ^
+    112 |           
+    113 |           // Normalize Vertex response to match EnhancedGenerateContentResponse
+    114 |           const normalizedResponse = {
+}
+Gemini API rate limit/unavailable (attempt 1). Retrying in 2000ms...
+Primary Gemini client failed. Checking if fallback is needed. [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent: [503 Service Unavailable] This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+Attempting fallback using Vertex AI with model: gemini-3.5-flash...
+Vertex AI Fallback also failed: Error [GoogleAuthError]: [VertexAI.GoogleAuthError]: 
+Unable to authenticate your request        
+Depending on your run time environment, you can get authentication by        
+- if in local instance or cloud shell: `!gcloud auth login`        
+- if in Colab:        
+    -`from google.colab import auth`        
+    -`auth.authenticate_user()`        
+- if in service account or other: please follow guidance in https://cloud.google.com/docs/authentication
+    at async (src/lib/gemini/client.ts:111:32)
+    at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+    at async GET (src/app/api/health/route.ts:37:5)
+  109 |             safetySettings: safetySettings as any,
+  110 |           });
+> 111 |           const vertexResult = await vertexModel.generateContent(request as any);
+      |                                ^
+  112 |           
+  113 |           // Normalize Vertex response to match EnhancedGenerateContentResponse
+  114 |           const normalizedResponse = { {
+  stackTrace: Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+      at async (src/lib/gemini/client.ts:111:32)
+      at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+      at async GET (src/app/api/health/route.ts:37:5)
+    109 |             safetySettings: safetySettings as any,
+    110 |           });
+  > 111 |           const vertexResult = await vertexModel.generateContent(request as any);
+        |                                ^
+    112 |           
+    113 |           // Normalize Vertex response to match EnhancedGenerateContentResponse
+    114 |           const normalizedResponse = {,
+  [cause]: Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+      at async (src/lib/gemini/client.ts:111:32)
+      at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+      at async GET (src/app/api/health/route.ts:37:5)
+    109 |             safetySettings: safetySettings as any,
+    110 |           });
+  > 111 |           const vertexResult = await vertexModel.generateContent(request as any);
+        |                                ^
+    112 |           
+    113 |           // Normalize Vertex response to match EnhancedGenerateContentResponse
+    114 |           const normalizedResponse = {
+}
+Gemini API rate limit/unavailable (attempt 2). Retrying in 4000ms...
+Primary Gemini client failed. Checking if fallback is needed. [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent: [503 Service Unavailable] This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+Attempting fallback using Vertex AI with model: gemini-3.5-flash...
+Vertex AI Fallback also failed: Error [GoogleAuthError]: [VertexAI.GoogleAuthError]: 
+Unable to authenticate your request        
+Depending on your run time environment, you can get authentication by        
+- if in local instance or cloud shell: `!gcloud auth login`        
+- if in Colab:        
+    -`from google.colab import auth`        
+    -`auth.authenticate_user()`        
+- if in service account or other: please follow guidance in https://cloud.google.com/docs/authentication
+    at async (src/lib/gemini/client.ts:111:32)
+    at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+    at async GET (src/app/api/health/route.ts:37:5)
+  109 |             safetySettings: safetySettings as any,
+  110 |           });
+> 111 |           const vertexResult = await vertexModel.generateContent(request as any);
+      |                                ^
+  112 |           
+  113 |           // Normalize Vertex response to match EnhancedGenerateContentResponse
+  114 |           const normalizedResponse = { {
+  stackTrace: Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+      at async (src/lib/gemini/client.ts:111:32)
+      at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+      at async GET (src/app/api/health/route.ts:37:5)
+    109 |             safetySettings: safetySettings as any,
+    110 |           });
+  > 111 |           const vertexResult = await vertexModel.generateContent(request as any);
+        |                                ^
+    112 |           
+    113 |           // Normalize Vertex response to match EnhancedGenerateContentResponse
+    114 |           const normalizedResponse = {,
+  [cause]: Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+      at async (src/lib/gemini/client.ts:111:32)
+      at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+      at async GET (src/app/api/health/route.ts:37:5)
+    109 |             safetySettings: safetySettings as any,
+    110 |           });
+  > 111 |           const vertexResult = await vertexModel.generateContent(request as any);
+        |                                ^
+    112 |           
+    113 |           // Normalize Vertex response to match EnhancedGenerateContentResponse
+    114 |           const normalizedResponse = {
+}
+Health Check: Gemini error Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent: [503 Service Unavailable] This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+    at handleResponseNotOk (.next/dev/server/chunks/[root-of-the-server]__15u35if._.js:2438:11)
+    at async makeRequest (.next/dev/server/chunks/[root-of-the-server]__15u35if._.js:2410:9)
+    at async generateContent (.next/dev/server/chunks/[root-of-the-server]__15u35if._.js:2852:22)
+    at async (src/lib/gemini/client.ts:93:24)
+    at async GeminiClientSingleton.withRetry (src/lib/gemini/client.ts:44:16)
+    at async GET (src/app/api/health/route.ts:37:5)
+  91 |           safetySettings,
+  92 |         });
+> 93 |         const result = await model.generateContent(request);
+     |                        ^
+  94 |         this.logTokenUsage(result, "generateContent");
+  95 |         return result;
+  96 |       } catch (primaryError: any) { {
+  status: 503,
+  statusText: 'Service Unavailable',
+  errorDetails: undefined
+}
+ GET /api/health 503 in 19.5s (next.js: 590ms, proxy.ts: 122ms, application-code: 18.8s)
