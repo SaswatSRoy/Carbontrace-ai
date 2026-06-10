@@ -21,9 +21,10 @@ export async function GET() {
     // A simple read query to verify Firebase Admin is connected
     await adminDb.collection("system").doc("health").get();
     status.services.firebase = "connected";
-  } catch (error: any) {
+  } catch (error: unknown) {
     // NOT_FOUND (code 5) means Firestore IS reachable, the doc just doesn't exist
-    if (error?.code === 5) {
+    const err = error as { code?: number };
+    if (err?.code === 5) {
       status.services.firebase = "connected";
     } else {
       console.error("Health Check: Firebase error", error);

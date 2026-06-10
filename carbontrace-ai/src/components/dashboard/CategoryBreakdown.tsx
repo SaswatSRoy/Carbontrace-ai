@@ -16,11 +16,19 @@ const CATEGORY_CONFIG = {
   waste: { name: "Waste", icon: "🗑️", color: "#6B7280", patternId: "pattern-waste", bgClass: "bg-[#6B7280]", fillClass: "fill-[#6B7280]" },
 };
 
+interface ActiveShapeProps {
+  cx: number;
+  cy: number;
+  innerRadius: number;
+  outerRadius: number;
+  startAngle: number;
+  endAngle: number;
+  fill: string;
+}
+
 // Custom active shape for highlighted segment
 const renderActiveShape = (props: unknown) => {
-  const p = props as any;
-  const RADIAN = Math.PI / 180;
-  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, value, percent } = p;
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props as ActiveShapeProps;
   return (
     <g>
       <Sector
@@ -45,8 +53,16 @@ const renderActiveShape = (props: unknown) => {
   );
 };
 
-const CustomTooltip = ({ active, payload, total }: { active?: boolean; payload?: readonly any[]; total: number }) => {
-  if (active && payload && payload.length) {
+interface TooltipPayloadEntry {
+  payload?: {
+    name: string;
+    icon: string;
+    value: number;
+  };
+}
+
+const CustomTooltip = ({ active, payload, total }: { active?: boolean; payload?: readonly TooltipPayloadEntry[]; total: number }) => {
+  if (active && payload && payload.length && payload[0].payload) {
     const data = payload[0].payload;
     const percentage = total > 0 ? ((data.value / total) * 100).toFixed(1) : 0;
     return (
@@ -60,10 +76,16 @@ const CustomTooltip = ({ active, payload, total }: { active?: boolean; payload?:
   return null;
 };
 
-const CustomLegend = ({ payload, data }: { payload?: readonly any[]; data: any[] }) => {
+interface LegendDataEntry {
+  bgClass: string;
+  icon: string;
+  name: string;
+}
+
+const CustomLegend = ({ payload, data }: { payload?: readonly unknown[]; data: LegendDataEntry[] }) => {
   return (
     <ul className="flex flex-wrap justify-center gap-4 mt-4">
-      {payload?.map((entry: any, index: number) => {
+      {payload?.map((_: unknown, index: number) => {
         const item = data[index];
         return (
           <li key={`item-${index}`} className="flex items-center text-sm text-text">

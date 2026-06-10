@@ -7,8 +7,10 @@ import { ActionCard } from "../../../components/actions/ActionCard";
 import { Skeleton } from "../../../components/ui/Skeleton";
 import { Sparkles } from "lucide-react";
 
+import { Action } from "../../../lib/carbon/types";
+
 export default function ActionsPage() {
-  const [actions, setActions] = useState<any[]>([]);
+  const [actions, setActions] = useState<Action[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -21,7 +21,7 @@ import {
  */
 export function calculateTransportEmissions(
   transport: UserProfile["transport"],
-  countryCode: string
+  _countryCode: string
 ): number {
   let carEmissions = 0;
   if (transport.fuelType !== "none") {

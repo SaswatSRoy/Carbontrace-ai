@@ -1,4 +1,3 @@
-import { NextRequest } from "next/server";
 import { adminAuth, adminApp } from "../firebase/admin";
 import { getAppCheck } from "firebase-admin/app-check";
 

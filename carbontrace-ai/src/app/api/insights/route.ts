@@ -5,7 +5,7 @@ import { geminiClient } from "../../../lib/gemini/client";
 import { INSIGHT_SYSTEM_PROMPT } from "../../../lib/gemini/prompts";
 import { ActionPlanSchema, ActionPlanZod } from "../../../lib/gemini/schemas";
 import { adminDb } from "../../../lib/firebase/admin";
-import { UserProfile, CarbonScore } from "../../../lib/carbon/types";
+import { UserProfile } from "../../../lib/carbon/types";
 import { calculateCarbonScore } from "../../../lib/carbon/calculator";
 
 export async function GET(req: NextRequest) {
@@ -100,7 +100,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(actions, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Insights API Error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }

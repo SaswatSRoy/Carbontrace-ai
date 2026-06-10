@@ -7,16 +7,16 @@ import dynamic from "next/dynamic";
 const CategoryBreakdown = dynamic(() => import("../../components/dashboard/CategoryBreakdown").then(mod => mod.CategoryBreakdown), { ssr: false });
 import { Camera, Sparkles, Target, Activity } from "lucide-react";
 import Link from "next/link";
-// Mock data or Firebase fetch logic. For phase 4 we will mock or fetch if available.
-import { calculateCarbonScore } from "../../lib/carbon/calculator";
 
+import { User } from "firebase/auth";
+import { CarbonScore } from "../../lib/carbon/types";
 import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase/client";
 import { IPCC_2030_TARGET_KG } from "../../lib/carbon/constants";
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<any>(null);
-  const [scoreData, setScoreData] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [scoreData, setScoreData] = useState<CarbonScore | null>(null);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -53,7 +53,7 @@ export default function DashboardPage() {
     return () => unsubscribe();
   }, []);
 
-  if (loading || (!scoreData && !errorMsg)) {
+  if (loading) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8">
         <ScoreRing />
@@ -61,12 +61,12 @@ export default function DashboardPage() {
     );
   }
 
-  if (errorMsg) {
+  if (errorMsg || !scoreData) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8">
         <div className="bg-red-500/10 text-red-500 p-4 rounded-xl border border-red-500/20 max-w-lg text-center">
           <h2 className="font-bold mb-2">Error Loading Dashboard</h2>
-          <p className="font-mono text-sm">{errorMsg}</p>
+          <p className="font-mono text-sm">{errorMsg || "No score data found."}</p>
         </div>
       </div>
     );
@@ -111,9 +111,9 @@ export default function DashboardPage() {
         />
         <MetricCard 
           title="Your Percentile" 
-          value={`Top ${scoreData.percentile}%`}
+          value={`Top ${scoreData.percentileVsNational}%`}
           subtitle="Of users in your region"
-          status={scoreData.percentile < 50 ? "good" : "neutral"}
+          status={scoreData.percentileVsNational < 50 ? "good" : "neutral"}
         />
       </div>
 

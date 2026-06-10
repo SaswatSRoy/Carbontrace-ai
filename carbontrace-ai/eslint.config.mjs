@@ -15,6 +15,16 @@ const eslintConfig = defineConfig([
     "coverage/**"
   ]),
   {
+    rules: {}
+  },
+  {
+    files: [
+      "tests/**/*",
+      "scripts/**/*",
+      "playwright.config.ts",
+      "vitest.config.ts",
+      "postcss.config.mjs"
+    ],
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "off"

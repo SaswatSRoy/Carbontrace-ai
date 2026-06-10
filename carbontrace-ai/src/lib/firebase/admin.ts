@@ -20,7 +20,7 @@ function getAdminApp(): admin.app.App {
     try {
       const serviceAccount = JSON.parse(serviceAccountKey);
       credential = admin.credential.cert(serviceAccount);
-    } catch (e) {
+    } catch {
       throw new Error("Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY JSON. Ensure it is a valid JSON string.");
     }
   } else {

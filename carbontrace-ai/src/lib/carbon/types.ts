@@ -90,6 +90,6 @@ export interface CarbonLog {
   category: string;
   source: 'bill_scan' | 'manual_entry' | 'system';
   description: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   createdAt?: Date;
 }

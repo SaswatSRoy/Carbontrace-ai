@@ -44,11 +44,16 @@ export async function POST(req: NextRequest) {
     // Strip simple HTML tags if any (basic sanitization)
     const sanitizedMessage = message.replace(/<[^>]*>?/gm, "");
 
+    interface ChatMessage {
+      role: string;
+      content: string;
+    }
+
     // Prepare system instructions via history if needed, or we just pass it as the first message
     const formattedHistory = [
       { role: "user", parts: [{ text: ONBOARDING_SYSTEM_PROMPT }] },
       { role: "model", parts: [{ text: "Understood. I am EcoGuide. Hello! Where are you from?" }] },
-      ...conversationHistory.map((msg: any) => ({
+      ...conversationHistory.map((msg: ChatMessage) => ({
         role: msg.role === "assistant" ? "model" : "user",
         parts: [{ text: msg.content }],
       })),
@@ -60,7 +65,7 @@ export async function POST(req: NextRequest) {
           {
             name: "extract_profile",
             description: "Saves the extracted carbon profile when enough information has been gathered from the user.",
-            parameters: ProfileExtractionSchema as any,
+            parameters: ProfileExtractionSchema as unknown as import("@google/generative-ai").FunctionDeclarationSchema,
           },
         ],
       },
@@ -119,7 +124,7 @@ export async function POST(req: NextRequest) {
     const replyText = response.text();
     return NextResponse.json({ reply: replyText, profileExtracted: false }, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Chat API Error:", error);
     return NextResponse.json({ error: "AI service unavailable" }, { status: 503 });
   }

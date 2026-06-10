@@ -28,7 +28,7 @@ export function TrendLine({ data }: { data: Record<string, unknown>[] }) {
           <Tooltip 
             contentStyle={{ backgroundColor: '#1A2E1F', border: '1px solid #2D3B31', borderRadius: '12px' }}
             itemStyle={{ color: '#86EFAC' }}
-            formatter={(value: any) => [`${value} kg`, 'Total Emissions']}
+            formatter={(value: number | string | readonly (number | string)[] | undefined) => [`${value ?? 0} kg`, 'Total Emissions']}
           />
           <Line 
             type="monotone" 

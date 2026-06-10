@@ -46,7 +46,7 @@ class GeminiClientSingleton {
         return await operation();
       } catch (error: unknown) {
         attempt++;
-        const err = error as any;
+        const err = error as { status?: number; response?: { status?: number } };
         const status = err?.status || err?.response?.status;
         if ((status === 429 || status === 503) && attempt < maxRetries) {
           const backoff = Math.pow(2, attempt) * 1000;
@@ -85,7 +85,7 @@ class GeminiClientSingleton {
   /**
    * Core generate content method with primary and fallback support
    */
-  async generateContent(request: GenerateContentRequest, isVision: boolean = false): Promise<GenerateContentResult> {
+  async generateContent(request: GenerateContentRequest, _isVision: boolean = false): Promise<GenerateContentResult> {
     return this.withRetry(async () => {
       try {
         // Try Primary (Google Generative AI Developer API)
@@ -110,9 +110,9 @@ class GeminiClientSingleton {
           const vertex = this.getVertexClient();
           const vertexModel = vertex.getGenerativeModel({
             model: useFallbackModel,
-            safetySettings: safetySettings as any,
+            safetySettings: safetySettings as unknown as import("@google-cloud/vertexai").SafetySetting[],
           });
-          const vertexResult = await vertexModel.generateContent(request as any);
+          const vertexResult = await vertexModel.generateContent(request as unknown as import("@google-cloud/vertexai").GenerateContentRequest);
           
           // Normalize Vertex response to match EnhancedGenerateContentResponse
           const normalizedResponse = {

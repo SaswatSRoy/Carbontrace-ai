@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ extracted, carbonKgThisPeriod, message }, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Scan API Error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }

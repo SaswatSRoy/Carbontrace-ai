@@ -38,7 +38,7 @@ export function ComparisonBars({ userScore, nationalAverage, targetScore }: { us
             cursor={{ fill: '#2D3B31' }}
             contentStyle={{ backgroundColor: '#1A2E1F', border: '1px solid #2D3B31', borderRadius: '12px' }}
             itemStyle={{ color: '#86EFAC' }}
-            formatter={(value: any) => [`${value} kg`, 'Emissions']}
+            formatter={(value: number | string | readonly (number | string)[] | undefined) => [`${value ?? 0} kg`, 'Emissions']}
           />
           <Bar dataKey="score" radius={[0, 4, 4, 0]} barSize={32}>
             {data.map((entry, index) => (

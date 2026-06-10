@@ -11,7 +11,7 @@ const TrendLine = dynamic(() => import("../../../components/dashboard/TrendLine"
 const ComparisonBars = dynamic(() => import("../../../components/dashboard/ComparisonBars").then(mod => mod.ComparisonBars), { ssr: false });
 
 export default function ProgressPage() {
-  const [history, setHistory] = useState<any[]>([]);
+  const [history, setHistory] = useState<{ date: string; score: number }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

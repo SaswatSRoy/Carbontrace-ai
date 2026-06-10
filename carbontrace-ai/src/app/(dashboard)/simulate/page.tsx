@@ -5,9 +5,10 @@ import { WhatIfPanel } from "../../../components/simulate/WhatIfPanel";
 import { auth, db } from "../../../lib/firebase/client";
 import { doc, getDoc, collection, query, orderBy, limit, getDocs } from "firebase/firestore";
 import { Skeleton } from "../../../components/ui/Skeleton";
+import { UserProfile } from "../../../lib/carbon/types";
 
 export default function SimulatePage() {
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +18,7 @@ export default function SimulatePage() {
         try {
           const profileSnap = await getDoc(doc(db, "users", user.uid, "profile", "data"));
           if (profileSnap.exists()) {
-            setProfile(profileSnap.data());
+            setProfile(profileSnap.data() as UserProfile);
           }
           
           const logsRef = collection(db, "users", user.uid, "carbon_logs");

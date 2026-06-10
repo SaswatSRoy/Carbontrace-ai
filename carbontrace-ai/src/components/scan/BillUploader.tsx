@@ -5,7 +5,6 @@ import { useDropzone } from "react-dropzone";
 import { UploadCloud, Camera, FileImage, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { auth } from "../../lib/firebase/client"; // assuming available
 import { motion, AnimatePresence } from "framer-motion";
-import toast from "react-hot-toast";
 import Image from "next/image";
 
 type UploadState = "idle" | "uploading" | "processing" | "success" | "error";
@@ -53,7 +52,7 @@ export function BillUploader() {
           const { appCheck } = await import("../../lib/firebase/client");
           if (appCheck) {
             const { getToken } = await import("firebase/app-check");
-            const tokenResult = await getToken(appCheck as any, false);
+            const tokenResult = await getToken(appCheck as import("firebase/app-check").AppCheck, false);
             appCheckTokenStr = tokenResult.token;
           }
         } catch (e) {
@@ -93,7 +92,7 @@ export function BillUploader() {
         setState("success");
       }
 
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e);
       setErrorMessage("Failed to process bill. Please try again.");
       setState("error");

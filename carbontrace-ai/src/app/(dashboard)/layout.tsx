@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { auth } from "@/lib/firebase/client"; // assuming available
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { LayoutDashboard, MessageSquare, Camera, Sparkles, Target, Activity, LogOut, Leaf } from "lucide-react";
 import Link from "next/link";
 import { AxeCoreDev } from "@/components/AxeCoreDev"; // optional
@@ -21,7 +21,7 @@ const NAV_ITEMS = [
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

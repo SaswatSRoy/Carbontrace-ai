@@ -47,7 +47,7 @@ export function WhatIfPanel({ baseProfile, baseScoreKg }: WhatIfPanelProps) {
             const { appCheck } = await import("../../lib/firebase/client");
             if (appCheck) {
               const { getToken } = await import("firebase/app-check");
-              const tokenResult = await getToken(appCheck as any, false);
+              const tokenResult = await getToken(appCheck as import("firebase/app-check").AppCheck, false);
               appCheckTokenStr = tokenResult.token;
             }
           } catch (e) {
@@ -101,7 +101,7 @@ export function WhatIfPanel({ baseProfile, baseScoreKg }: WhatIfPanelProps) {
           const { appCheck } = await import("../../lib/firebase/client");
           if (appCheck) {
             const { getToken } = await import("firebase/app-check");
-            const tokenResult = await getToken(appCheck as any, false);
+            const tokenResult = await getToken(appCheck as import("firebase/app-check").AppCheck, false);
             appCheckTokenStr = tokenResult.token;
           }
         } catch (e) {
@@ -130,7 +130,7 @@ export function WhatIfPanel({ baseProfile, baseScoreKg }: WhatIfPanelProps) {
       } else {
         toast.error("Failed to generate explanation");
       }
-    } catch (e) {
+    } catch {
       toast.error("Error connecting to AI");
     } finally {
       setIsNarrating(false);
@@ -266,12 +266,12 @@ function SliderRow({ label, value, min, max, step, unit, onChange, displayValue 
 // Helpers
 const DIETS = ["vegan", "vegetarian", "low_meat", "medium_meat", "heavy_meat"] as const;
 const DIET_DISPLAY = ["Vegan", "Vegetarian", "Low Meat", "Medium Meat", "Heavy Meat"];
-function dietToIndex(diet: string) { return Math.max(0, DIETS.indexOf(diet as any)); }
+function dietToIndex(diet: string) { return Math.max(0, DIETS.indexOf(diet as typeof DIETS[number])); }
 function indexToDiet(idx: number) { return DIETS[idx]; }
 function indexToDietDisplay(idx: number) { return DIET_DISPLAY[idx]; }
 
 const SHOPPING = ["minimal", "average", "heavy"] as const;
 const SHOPPING_DISPLAY = ["Minimal", "Average", "Heavy"];
-function shoppingToIndex(shop: string) { return Math.max(0, SHOPPING.indexOf(shop as any)); }
+function shoppingToIndex(shop: string) { return Math.max(0, SHOPPING.indexOf(shop as typeof SHOPPING[number])); }
 function indexToShopping(idx: number) { return SHOPPING[idx]; }
 function indexToShoppingDisplay(idx: number) { return SHOPPING_DISPLAY[idx]; }
