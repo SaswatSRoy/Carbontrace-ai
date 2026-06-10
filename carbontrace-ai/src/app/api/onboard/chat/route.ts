@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
           {
             name: "extract_profile",
             description: "Saves the extracted carbon profile when enough information has been gathered from the user.",
-            parameters: ProfileExtractionSchema,
+            parameters: ProfileExtractionSchema as any,
           },
         ],
       },

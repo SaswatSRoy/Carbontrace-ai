@@ -47,7 +47,7 @@ export function WhatIfPanel({ baseProfile, baseScoreKg }: WhatIfPanelProps) {
             const { appCheck } = await import("../../lib/firebase/client");
             if (appCheck) {
               const { getToken } = await import("firebase/app-check");
-              const tokenResult = await getToken(appCheck, false);
+              const tokenResult = await getToken(appCheck as any, false);
               appCheckTokenStr = tokenResult.token;
             }
           } catch (e) {
@@ -101,7 +101,7 @@ export function WhatIfPanel({ baseProfile, baseScoreKg }: WhatIfPanelProps) {
           const { appCheck } = await import("../../lib/firebase/client");
           if (appCheck) {
             const { getToken } = await import("firebase/app-check");
-            const tokenResult = await getToken(appCheck, false);
+            const tokenResult = await getToken(appCheck as any, false);
             appCheckTokenStr = tokenResult.token;
           }
         } catch (e) {
@@ -225,7 +225,18 @@ export function WhatIfPanel({ baseProfile, baseScoreKg }: WhatIfPanelProps) {
 }
 
 // Sub-component for Sliders
-function SliderRow({ label, value, min, max, step, unit, onChange, displayValue }: any) {
+interface SliderRowProps {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  unit: string;
+  onChange: (val: number) => void;
+  displayValue?: string | number;
+}
+
+function SliderRow({ label, value, min, max, step, unit, onChange, displayValue }: SliderRowProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight") onChange(Math.min(max, value + step));
     if (e.key === "ArrowLeft") onChange(Math.max(min, value - step));

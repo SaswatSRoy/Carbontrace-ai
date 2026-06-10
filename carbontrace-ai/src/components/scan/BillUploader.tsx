@@ -53,7 +53,7 @@ export function BillUploader() {
           const { appCheck } = await import("../../lib/firebase/client");
           if (appCheck) {
             const { getToken } = await import("firebase/app-check");
-            const tokenResult = await getToken(appCheck, false);
+            const tokenResult = await getToken(appCheck as any, false);
             appCheckTokenStr = tokenResult.token;
           }
         } catch (e) {

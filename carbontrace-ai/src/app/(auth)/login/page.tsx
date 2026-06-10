@@ -33,9 +33,9 @@ export default function LoginPage() {
 
       toast.success("Successfully logged in!");
       router.push("/");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      toast.error(error.message || "Failed to sign in");
+      toast.error(error instanceof Error ? error.message : "Failed to sign in");
     } finally {
       setIsLoading(false);
     }
@@ -104,9 +104,9 @@ export default function LoginPage() {
               if (!res.ok) throw new Error("Failed to create session");
               toast.success("Successfully logged into Demo Account!");
               router.push("/");
-            } catch (error: any) {
+            } catch (error: unknown) {
               console.error(error);
-              toast.error(error.message || "Failed to sign in to demo");
+              toast.error(error instanceof Error ? error.message : "Failed to sign in to demo");
             } finally {
               setIsLoading(false);
             }

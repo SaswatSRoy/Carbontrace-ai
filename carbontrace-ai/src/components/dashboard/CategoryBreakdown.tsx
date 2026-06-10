@@ -17,8 +17,10 @@ const CATEGORY_CONFIG = {
 };
 
 // Custom active shape for highlighted segment
-const renderActiveShape = (props: any) => {
-  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, value, percent } = props;
+const renderActiveShape = (props: unknown) => {
+  const p = props as any;
+  const RADIAN = Math.PI / 180;
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, value, percent } = p;
   return (
     <g>
       <Sector
@@ -43,7 +45,7 @@ const renderActiveShape = (props: any) => {
   );
 };
 
-const CustomTooltip = ({ active, payload, total }: any) => {
+const CustomTooltip = ({ active, payload, total }: { active?: boolean; payload?: readonly any[]; total: number }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     const percentage = total > 0 ? ((data.value / total) * 100).toFixed(1) : 0;
@@ -58,10 +60,10 @@ const CustomTooltip = ({ active, payload, total }: any) => {
   return null;
 };
 
-const CustomLegend = ({ payload, data }: any) => {
+const CustomLegend = ({ payload, data }: { payload?: readonly any[]; data: any[] }) => {
   return (
     <ul className="flex flex-wrap justify-center gap-4 mt-4">
-      {payload.map((entry: any, index: number) => {
+      {payload?.map((entry: any, index: number) => {
         const item = data[index];
         return (
           <li key={`item-${index}`} className="flex items-center text-sm text-text">
@@ -91,7 +93,7 @@ export function CategoryBreakdown({ breakdown }: CategoryBreakdownProps) {
     fillClass: CATEGORY_CONFIG[key as keyof typeof CATEGORY_CONFIG].fillClass,
   }));
 
-  const onPieEnter = (_: any, index: number) => {
+  const onPieEnter = (_: unknown, index: number) => {
     setActiveIndex(index);
   };
   const onPieLeave = () => {

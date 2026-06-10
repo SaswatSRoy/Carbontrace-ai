@@ -5,10 +5,10 @@ import { DocumentData, QueryDocumentSnapshot, Timestamp } from "firebase-admin/f
 /**
  * Generic Firestore data converter helper.
  */
-const converter = <T>() => ({
+const converter = <T extends object>() => ({
   toFirestore: (data: T): DocumentData => {
     // Convert Dates to Timestamps for Firestore
-    const converted: any = { ...data };
+    const converted: Record<string, unknown> = { ...data } as Record<string, unknown>;
     Object.keys(converted).forEach(key => {
       if (converted[key] instanceof Date) {
         converted[key] = Timestamp.fromDate(converted[key]);

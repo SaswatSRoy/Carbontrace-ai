@@ -3,7 +3,7 @@
 import React from "react";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
-export function TrendLine({ data }: { data: any[] }) {
+export function TrendLine({ data }: { data: Record<string, unknown>[] }) {
   if (!data || data.length === 0) return null;
 
   return (

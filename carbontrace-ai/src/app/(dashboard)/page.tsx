@@ -12,6 +12,7 @@ import { calculateCarbonScore } from "../../lib/carbon/calculator";
 
 import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase/client";
+import { IPCC_2030_TARGET_KG } from "../../lib/carbon/constants";
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
@@ -39,9 +40,9 @@ export default function DashboardPage() {
             setScoreData(null); 
             setErrorMsg("No logs found for this user in the database.");
           }
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error("Failed to fetch score data:", error);
-          setErrorMsg(error?.message || "Unknown error fetching from Firestore");
+          setErrorMsg(error instanceof Error ? error.message : "Unknown error fetching from Firestore");
         }
       } else {
         setUser(null);
@@ -73,8 +74,7 @@ export default function DashboardPage() {
 
   const name = user?.displayName?.split(" ")[0] || "User";
   const diffNational = scoreData.totalKgCO2eYear - scoreData.nationalAverageKg;
-  const target15C = 2500; // IPCC 2030 target approx
-  const diffTarget = scoreData.totalKgCO2eYear - target15C;
+  const diffTarget = scoreData.totalKgCO2eYear - IPCC_2030_TARGET_KG;
 
   return (
     <div className="p-4 md:p-8 max-w-6xl mx-auto w-full">
@@ -138,7 +138,14 @@ export default function DashboardPage() {
   );
 }
 
-function MetricCard({ title, value, subtitle, status }: any) {
+interface MetricCardProps {
+  title: string;
+  value: string | number;
+  subtitle: string;
+  status: "good" | "bad" | "neutral";
+}
+
+function MetricCard({ title, value, subtitle, status }: MetricCardProps) {
   const statusColor = status === "good" ? "text-primary" : status === "bad" ? "text-danger" : "text-text";
   return (
     <div className="bg-surface p-5 rounded-xl border border-surface-2 shadow-subtle">
@@ -149,7 +156,14 @@ function MetricCard({ title, value, subtitle, status }: any) {
   );
 }
 
-function QuickActionLink({ href, icon: Icon, title, desc }: any) {
+interface QuickActionLinkProps {
+  href: string;
+  icon: React.ElementType;
+  title: string;
+  desc: string;
+}
+
+function QuickActionLink({ href, icon: Icon, title, desc }: QuickActionLinkProps) {
   return (
     <Link href={href} className="flex flex-col p-5 bg-surface-2 rounded-xl border border-transparent hover:border-primary/50 transition-colors group">
       <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
@@ -161,7 +175,14 @@ function QuickActionLink({ href, icon: Icon, title, desc }: any) {
   );
 }
 
-function ActivityRow({ title, date, value, isPositive = false }: any) {
+interface ActivityRowProps {
+  title: string;
+  date: string;
+  value: string | number;
+  isPositive?: boolean;
+}
+
+function ActivityRow({ title, date, value, isPositive = false }: ActivityRowProps) {
   return (
     <div className="flex items-center justify-between p-4 hover:bg-surface-2 transition-colors">
       <div className="flex items-center">

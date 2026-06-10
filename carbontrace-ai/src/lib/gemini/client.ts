@@ -5,6 +5,8 @@ import {
   GenerateContentRequest,
   GenerateContentResult,
   ChatSession,
+  Content,
+  Tool,
 } from "@google/generative-ai";
 import { VertexAI } from "@google-cloud/vertexai";
 
@@ -42,9 +44,10 @@ class GeminiClientSingleton {
     while (attempt < maxRetries) {
       try {
         return await operation();
-      } catch (error: any) {
+      } catch (error: unknown) {
         attempt++;
-        const status = error?.status || error?.response?.status;
+        const err = error as any;
+        const status = err?.status || err?.response?.status;
         if ((status === 429 || status === 503) && attempt < maxRetries) {
           const backoff = Math.pow(2, attempt) * 1000;
           console.warn(`Gemini API rate limit/unavailable (attempt ${attempt}). Retrying in ${backoff}ms...`);
@@ -93,12 +96,13 @@ class GeminiClientSingleton {
         const result = await model.generateContent(request);
         this.logTokenUsage(result, "generateContent");
         return result;
-      } catch (primaryError: any) {
-        console.warn("Primary Gemini client failed. Checking if fallback is needed.", primaryError.message);
+      } catch (primaryError: unknown) {
+        const errMsg = primaryError instanceof Error ? primaryError.message : String(primaryError);
+        console.warn("Primary Gemini client failed. Checking if fallback is needed.", errMsg);
         
         // If it's a 4xx error (other than 429) it's likely a bad request, not a service outage. 
         // But if the model name is not found (e.g. 3.5 doesn't exist), we should fallback to 1.5.
-        const isModelNotFoundError = primaryError.message?.includes("models/gemini-3.5-flash is not found");
+        const isModelNotFoundError = errMsg.includes("models/gemini-3.5-flash is not found");
         const useFallbackModel = isModelNotFoundError ? FALLBACK_MODEL_NAME : MODEL_NAME;
 
         try {
@@ -115,22 +119,22 @@ class GeminiClientSingleton {
             ...vertexResult.response,
             text: () => {
               const parts = vertexResult.response.candidates?.[0]?.content?.parts || [];
-              return parts.map((p: any) => p.text).filter(Boolean).join("");
+              return parts.map((p: { text?: string }) => p.text).filter(Boolean).join("");
             },
             functionCalls: () => {
               const parts = vertexResult.response.candidates?.[0]?.content?.parts || [];
-              return parts.map((p: any) => p.functionCall).filter(Boolean);
+              return parts.map((p: { functionCall?: unknown }) => p.functionCall).filter(Boolean);
             },
             functionCall: () => {
               const parts = vertexResult.response.candidates?.[0]?.content?.parts || [];
-              return parts.find((p: any) => p.functionCall)?.functionCall;
+              return parts.find((p: { functionCall?: unknown }) => p.functionCall)?.functionCall;
             }
           };
 
           const result = { response: normalizedResponse } as unknown as GenerateContentResult;
           this.logTokenUsage(result, "generateContent (Vertex Fallback)");
           return result;
-        } catch (fallbackError: any) {
+        } catch (fallbackError: unknown) {
           console.error("Vertex AI Fallback also failed:", fallbackError);
           throw primaryError; // Throw original error if both fail
         }
@@ -141,7 +145,7 @@ class GeminiClientSingleton {
   /**
    * Start a chat session (mostly for onboarding)
    */
-  getChatSession(history: any[] = [], tools?: any[]): ChatSession {
+  getChatSession(history: Content[] = [], tools?: Tool[]): ChatSession {
     // Note: If chat session encounters transient errors during sendMessage, 
     // we would ideally wrap sendMessage in withRetry at the call site.
     const model = this.primaryClient.getGenerativeModel({
